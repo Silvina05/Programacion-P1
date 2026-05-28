@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main(void)
+{
+  const int ruedas;
+  float precio;
+  char inicialMarca;
+  int anioFabricacion;
+
+  printf("Ingrese la cantidad de ruedas: ");
+  scanf("%d", &ruedas);
+
+  printf("Ingrese el precio de la bicicleta: ");
+  scanf("%f", &precio);
+
+  printf("Ingrese la letra inicial de la marca: ");
+  scanf(" %c", &inicialMarca);
+
+  printf("Ingrese el año de fabricación: ");
+  scanf("%d", &anioFabricacion);
+
+  printf("Cantidad de ruedas: %d\n", ruedas);
+  printf("Precio: $%.2f\n", precio);
+  printf("Inicial de la marca: %c\n", inicialMarca);
+  printf("Año de fabricación: %d\n", anioFabricacion);
+
+  return 0;
+}

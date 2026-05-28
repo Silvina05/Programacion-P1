@@ -1,0 +1,25 @@
+#include <stdio.h>
+
+int main()
+{
+  char inicial;
+  int edad;
+  float altura;
+
+  // Entrada de datos
+  printf("Ingrese la inicial de su nombre: ");
+  scanf(" %c", &inicial);
+
+  printf("Ingrese su edad: ");
+  scanf("%d", &edad);
+
+  printf("Ingrese su altura en metros: ");
+  scanf("%f", &altura);
+
+  // Salida de datos
+  printf("\nDatos ingresados:\n");
+  printf("Inicial: %c\n", inicial);
+  printf("Edad: %d años\n", edad);
+  printf("Altura: %f metros\n", altura);
+
+  return 0;
