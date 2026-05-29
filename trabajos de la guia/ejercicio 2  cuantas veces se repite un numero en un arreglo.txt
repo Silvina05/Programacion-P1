@@ -1,0 +1,118 @@
+#include <stdio.h>
+#define tam 10 
+void ordenar1(int arreglo[], int n);
+void  ordenarBurbujaDescendente(int D[], int sizeD);
+int busqueda (int D[], int sizeD , int buscado);
+
+int main() {
+
+    int A [tam]= {0,4,78,5,32,9,77,1,23,4};
+    int B [tam];
+    int D [20];
+    int sizeD = 0;
+
+    int buscado;
+    int resultado;
+
+    int i;
+    int n = tam;
+
+
+    for (i=0; i<tam; i++){
+        printf("ingrese valor a cargar \n");
+        scanf (" %d", &B[i]);
+    }
+
+    //ordenar a y b
+     ordenar1(A, n);
+     ordenar1(B, n);
+
+     printf("\nArreglo A ordenado de mayor a menor:\n");
+    for (i = 0; i < tam; i++) printf(" %d ", A[i]);
+    
+    printf("\n\nArreglo B ordenado de mayor a menor:\n");
+    for (i = 0; i < tam; i++) printf(" %d ", B[i]);
+    printf("\n");
+
+    
+     //Unión en D
+    // Insertar de A
+    for (int i = 0; i < 10; i++) {
+         D[sizeD++] = A[i];
+    }
+    // Insertar de B
+    for (int i = 0; i < 10; i++) {
+       
+       D[sizeD++] = B[i];
+            
+    }
+       
+
+    
+
+// ordenar D
+    ordenarBurbujaDescendente(D, sizeD);
+
+    printf("\nMatriz D (Union ordenada descendente ):\n");
+    for (int i = 0; i < sizeD; i++) {
+        printf(" %d ", D[i]);
+    }
+    printf("\n");
+
+
+    printf ("ingrese numero para buscar y ver cuantas veces se repite  ");
+    scanf (" %d", &buscado);
+// busqueda 
+    resultado = busqueda ( D, sizeD, buscado);
+
+    if (resultado == 0){
+        printf (" no se encontro en el arreglo");
+    } else printf (" si esta en el arreglo, se repite %d veces", resultado );
+
+    return 0;
+}
+
+
+
+// ordenar arreglo 1 
+void ordenar1(int A[], int n) {
+    int i, j, aux;
+    for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - 1 - i; j++) {
+            if (A[j] < A[j + 1]) {
+                // Intercambio
+                aux = A[j];
+                A[j] = A[j + 1];
+                A[j + 1] = aux;
+            }
+        }
+    }
+}
+
+
+void  ordenarBurbujaDescendente(int D[], int sizeD ){
+    int i, j, aux;
+    for (i = 0; i < sizeD  - 1; i++) {
+        for (j = 0; j < sizeD  - 1 - i; j++) {
+            if (D[j] < D[j + 1]) {
+                // Intercambio
+                aux = D[j];
+                D[j] = D[j + 1];
+                D[j + 1] = aux;
+            }
+        }
+    }
+}
+
+int busqueda (int D[], int sizeD , int buscado) {
+    int acum =0;
+    for (int i = 0; i < sizeD; i++) {
+        if (D[i] == buscado) {
+            acum++; // ¡Lo encontramos!
+        }
+    }
+  return acum;  
+}
+
+
+

@@ -1,0 +1,145 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5
+
+struct Cliente {
+    int nro_cliente;
+    char tipo;
+    char nombre[50];
+    char celular[20];
+};
+
+void cargar(struct Cliente lista[], int n);
+void ordenar(struct Cliente lista[], int n);
+void mostrar(struct Cliente lista[], int n);
+int busqueda_binaria(struct Cliente lista[], int n, int nro_buscado);
+void separar_por_tipo(struct Cliente lista[], int n,
+                      struct Cliente empresas[], int *cant_e,
+                      struct Cliente particulares[], int *cant_p);
+
+int main() {
+    struct Cliente clientes[MAX];
+    struct Cliente empresas[MAX];
+    struct Cliente particulares[MAX];
+    int cant_e = 0, cant_p = 0;
+
+    cargar(clientes, MAX);
+    ordenar(clientes, MAX);
+    mostrar(clientes, MAX);
+
+    int nro_buscado;
+    printf("Ingrese Nro de cliente a buscar: ");
+    scanf("%d", &nro_buscado);
+
+    int resultado = busqueda_binaria(clientes, MAX, nro_buscado);
+
+    if (resultado == -1) {
+        printf("Cliente %d no encontrado.\n", nro_buscado);
+    } else {
+        printf("Cliente encontrado:\n");
+        printf("Nro    : %d\n", clientes[resultado].nro_cliente);
+        if (clientes[resultado].tipo == 'E') {
+            printf("Tipo   : Empresa\n");
+        } else {
+            printf("Tipo   : Particular\n");
+        }
+        printf("Nombre : %s\n", clientes[resultado].nombre);
+        printf("Celular: %s\n", clientes[resultado].celular);
+    }
+
+    separar_por_tipo(clientes, MAX, empresas, &cant_e, particulares, &cant_p);
+
+    printf("\nClientes EMPRESA:\n");
+    mostrar(empresas, cant_e);
+
+    printf("\nClientes PARTICULAR:\n");
+    mostrar(particulares, cant_p);
+
+    return 0;
+}
+
+void cargar(struct Cliente lista[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("\n--- Cliente %d ---\n", i + 1);
+
+        printf("Nro de cliente: ");
+        scanf("%d", &lista[i].nro_cliente);
+
+        do {
+            printf("Tipo (E=Empresa / P=Particular): ");
+            scanf(" %c", &lista[i].tipo);
+            if (lista[i].tipo != 'E' && lista[i].tipo != 'P') {
+                printf("Tipo invalido. Ingrese E o P.\n");
+            }
+        } while (lista[i].tipo != 'E' && lista[i].tipo != 'P');
+
+        printf("Nombre: ");
+        gets(lista[i].nombre);
+
+        printf("Nro Celular: ");
+        gets(lista[i].celular);
+    }
+}
+
+void ordenar(struct Cliente lista[], int n) {
+    struct Cliente temp;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (lista[j].nro_cliente > lista[j + 1].nro_cliente) {
+                temp = lista[j];
+                lista[j] = lista[j + 1];
+                lista[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void mostrar(struct Cliente lista[], int n) {
+    for (int i = 0; i < n; i++) {
+        printf("Nro    : %d\n", lista[i].nro_cliente);
+        if (lista[i].tipo == 'E') {
+            printf("Tipo   : Empresa\n");
+        } else {
+            printf("Tipo   : Particular\n");
+        }
+        printf("Nombre : %s\n", lista[i].nombre);
+        printf("Celular: %s\n", lista[i].celular);
+        printf("---\n");
+    }
+}
+
+int busqueda_binaria(struct Cliente lista[], int n, int nro_buscado) {
+    int inicio = 0;
+    int fin = n - 1;
+
+    while (inicio <= fin) {
+        int medio = (inicio + fin) / 2;
+
+        if (lista[medio].nro_cliente == nro_buscado) {
+            return medio;
+        } else if (lista[medio].nro_cliente < nro_buscado) {
+            inicio = medio + 1;
+        } else {
+            fin = medio - 1;
+        }
+    }
+    return -1;
+}
+
+void separar_por_tipo(struct Cliente lista[], int n,
+                      struct Cliente empresas[], int *cant_e,
+                      struct Cliente particulares[], int *cant_p) {
+    *cant_e = 0;
+    *cant_p = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (lista[i].tipo == 'E') {
+            empresas[*cant_e] = lista[i];
+            (*cant_e)++;
+        } else {
+            particulares[*cant_p] = lista[i];
+            (*cant_p)++;
+        }
+    }
+}

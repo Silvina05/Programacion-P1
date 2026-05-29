@@ -1,0 +1,15 @@
+void ordenarSeleccion(int arr[], int n) {
+    int i, j, min_idx, aux;
+    for (i = 0; i < n - 1; i++) {
+        min_idx = i; // Suponemos que el actual es el mínimo
+        for (j = i + 1; j < n; j++) {
+            if (arr[j] < arr[min_idx]) {
+                min_idx = j; // Encontramos uno más chico
+            }
+        }
+        // Intercambiamos el mínimo encontrado con el de la posición actual
+        aux = arr[min_idx];
+        arr[min_idx] = arr[i];
+        arr[i] = aux;
+    }
+}

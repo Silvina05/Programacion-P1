@@ -1,0 +1,116 @@
+#include <stdio.h>
+#define tam 10 
+
+// Reutilizaremos esta UNICA función para ordenar CUALQUIER arreglo (A, B o D)
+void ordenarDescendente(int arreglo[], int tamaño);
+int busquedaBinaria(int D[], int sizeD, int buscado);
+
+int main() {
+    // 1. Cargar el arreglo A en la declaración de variables
+    int A[tam] = {0, 4, 78, 5, 32, 9, 77, 1, 23, 4};
+    int B[tam];
+    int C[tam];
+    int D[20]; // Capacidad máxima si no se repitiera ninguno
+    int sizeD = 0;
+    int buscado, resultado, i;
+
+    // 2. Cargar el arreglo B por teclado
+    for (i = 0; i < tam; i++) {
+        printf("Ingrese valor para B[%d]: ", i);
+        scanf("%d", &B[i]);
+    }
+
+    // 3. Generar un arreglo C que contenga la suma de A y B
+    for (i = 0; i < tam; i++) {
+        C[i] = A[i] + B[i];
+    }
+
+    // 4. Generar un procedimiento para ordenar los arreglos A y B de mayor a menor
+    ordenarDescendente(A, tam);
+    ordenarDescendente(B, tam);
+
+    // 5. Generar un arreglo D que contenga A y B sin elementos repetidos
+    // (Insertar de A)
+    for (i = 0; i < tam; i++) {
+        int repetido = 0;
+        for (int k = 0; k < sizeD; k++) {
+            if (A[i] == D[k]) { repetido = 1; break; }
+        }
+        if (!repetido) D[sizeD++] = A[i];
+    }
+    // (Insertar de B)
+    for (i = 0; i < tam; i++) {
+        int repetido = 0;
+        for (int k = 0; k < sizeD; k++) {
+            if (B[i] == D[k]) { repetido = 1; break; }
+        }
+        if (!repetido) D[sizeD++] = B[i];
+    }
+
+    // REUTILIZACIÓN: Ordenamos D con la misma función de antes usando su tamaño real
+    ordenarDescendente(D, sizeD);
+
+    // 7. Mostrar los arreglos por pantalla (El enunciado pide mostrar los tres, ¡mostramos todos!)
+    printf("\n--- ARREGLOS RESULTANTES ---\n");
+    printf("Arreglo A (Ordenado): ");
+    for (i = 0; i < tam; i++) printf("%d ", A[i]);
+    
+    printf("\nArreglo B (Ordenado): ");
+    for (i = 0; i < tam; i++) printf("%d ", B[i]);
+    
+    printf("\nArreglo C (Suma A+B):  ");
+    for (i = 0; i < tam; i++) printf("%d ", C[i]);
+    
+    printf("\nArreglo D (Union s/rep): ");
+    for (i = 0; i < sizeD; i++) printf("%d ", D[i]);
+    printf("\n\n");
+
+    // 6. Generar una función de búsqueda binaria
+    printf("Ingrese numero para buscar en D: ");
+    scanf("%d", &buscado);
+    
+    resultado = busquedaBinaria(D, sizeD, buscado);
+
+    if (resultado == 0) {
+        printf("Resultado: 0 (No se encontro en el arreglo D)\n");
+    } else {
+        printf("Resultado: 1 (Si esta en el arreglo D)\n");
+    }
+
+    return 0;
+}
+
+// Procedimiento de ordenamiento reutilizable (Mayor a Menor)
+void ordenarDescendente(int arreglo[], int tamaño) {
+    int i, j, aux;
+    for (i = 0; i < tamaño - 1; i++) {
+        for (j = 0; j < tamaño - 1 - i; j++) {
+            if (arreglo[j] < arreglo[j + 1]) {
+                aux = arreglo[j];
+                arreglo[j] = arreglo[j + 1];
+                arreglo[j + 1] = aux;
+            }
+        }
+    }
+}
+
+// Función de búsqueda binaria para arreglos descendentes
+int busquedaBinaria(int D[], int sizeD, int buscado) {
+    int inicio = 0;
+    int fin = sizeD - 1;
+
+    while (inicio <= fin) {
+        int medio = inicio + (fin - inicio) / 2;
+
+        if (D[medio] == buscado) {
+            return 1; // Encontrado
+        }
+
+        if (D[medio] < buscado) {
+            fin = medio - 1; // El buscado es mayor, está a la izquierda
+        } else {
+            inicio = medio + 1; // El buscado es menor, está a la derecha
+        }
+    }
+    return 0; // No encontrado
+}

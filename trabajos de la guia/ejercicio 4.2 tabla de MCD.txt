@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+// --- 1. DEFINICIÓN DE PROTOTIPO ---
+int calcular_mcd(int a, int b);
+void mostrar_tabla(int divisores[6], int matriz[6][6]);
+
+// --- FLUJO PRINCIPAL (MAIN) ---
+int main() {
+    // El conjunto D_50 de divisores de 50 (6 elementos)
+    int divisores[6] = {1, 2, 5, 10, 25, 50};
+    
+    // Matriz de 6x6 para almacenar los resultados de la tabla
+    int matriz_cayley[6][6];
+
+    // Bucles anidados para calcular el m.c.d. de cada combinación
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 6; j++) {
+            // Evaluamos la operación: a . b = m.c.d.(a, b)
+            matriz_cayley[i][j] = calcular_mcd(divisores[i], divisores[j]);
+        }
+    }
+
+    // Llamamos al procedimiento para dibujar la tabla en pantalla
+    mostrar_tabla(divisores, matriz_cayley);
+
+    return 0;
+}
+
+// --- 3. PROCESO / DESARROLLO DE FUNCIONES  ---
+
+// Función matemática que calcula el Máximo Común Divisor (Algoritmo de Euclides)
+int calcular_mcd(int a, int b) {
+    int temporal;
+    while (b != 0) {
+        temporal = b;
+        b = a % b; // El residuo pasa a ser el nuevo divisor
+        a = temporal;
+    }
+    return a; // Cuando 'b' llega a 0, 'a' es el m.c.d.
+}
+
+// Procedimiento para mostrar la matriz con formato estético de tabla
+void mostrar_tabla(int divisores[6], int matriz[6][6]) {
+    printf("\nTABLA - OPERACION: a.b = m.c.d.(a,b)\n\n");
+    
+    // Imprimir el encabezado superior (las columnas de la tabla)
+    printf(" m.c.d |");
+    for (int j = 0; j < 6; j++) {
+        printf(" %2d ", divisores[j]);
+    }
+    printf("\n-------+-------------------------\n");
+
+    // Imprimir las filas con sus respectivos resultados
+    for (int i = 0; i < 6; i++) {
+        // Imprime el divisor de la fila actual a la izquierda
+        printf("  %2d   |", divisores[i]);
+        
+        // Imprime los resultados de m.c.d. calculados para esa fila
+        for (int j = 0; j < 6; j++) {
+            printf(" %2d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
