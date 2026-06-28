@@ -54,10 +54,9 @@ void listarPiezasPorValor(struct Pieza piezas[], int cantidad)
     printf("Piezas ordenadas por valor (de mayor a menor):\n");
     for (int i = 0; i < cantidad; i++)
     {
-        printf("Posicion: (%d,%d), Tipo: %s, Color: %c, Valor: %d, Estado: %s\n",
+        printf("Posicion: (%d,%d), Tipo: %s, Color: %c, Valor: %d\n",
                piezas[i].posicion[0], piezas[i].posicion[1],
-               piezas[i].tipo, piezas[i].color, piezas[i].valor,
-               piezas[i].activa ? "Activa" : "Capturada");
+               piezas[i].tipo, piezas[i].color, piezas[i].valor);
     }
 }
 
@@ -66,16 +65,14 @@ void listarPiezasPorValor(struct Pieza piezas[], int cantidad)
 // listar piezas ordenadas por posicion (fila primero, luego columna)
 void listarPiezasPorPosicion(struct Pieza piezas[], int cantidad)
 {
-    // Usamos la funcion de ordenamiento ya existente
     ordenarPiezas(piezas, cantidad);
 
     printf("Piezas ordenadas por posicion:\n");
     for (int i = 0; i < cantidad; i++)
     {
-        printf("Posicion: (%d,%d), Tipo: %s, Color: %c, Valor: %d, Estado: %s\n",
+        printf("Posicion: (%d,%d), Tipo: %s, Color: %c, Valor: %d\n",
                piezas[i].posicion[0], piezas[i].posicion[1],
-               piezas[i].tipo, piezas[i].color, piezas[i].valor,
-               piezas[i].activa ? "Activa" : "Capturada");
+               piezas[i].tipo, piezas[i].color, piezas[i].valor);
     }
 }
 
@@ -135,8 +132,9 @@ void modificarPieza(struct Pieza piezas[], int cantidad, int fila, int columna)
     {
         if (piezas[i].posicion[0] == fila && piezas[i].posicion[1] == columna)
         {
-            printf("Pieza encontrada: %s, Color: %c\n", piezas[i].tipo, piezas[i].color);
-
+            printf("Pieza encontrada: Tipo: %s, Color: %c, Valor: %d\n",
+                   piezas[i].tipo, piezas[i].color, piezas[i].valor);
+            
             int numeroPieza;
             printf("Seleccione nuevo tipo:\n");
             printf("1. Peon\n2. Torre\n3. Caballo\n4. Alfil\n5. Reina\n6. Rey\n");

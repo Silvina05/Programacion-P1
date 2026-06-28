@@ -1,38 +1,30 @@
 // habilitar un cliente por DNI
 void habilitarCliente(struct Cliente clientes[], int cantidad, int dni)
 {
-    // Recorremos todo el arreglo de clientes
     for (int i = 0; i < cantidad; i++)
     {
-        // Si encontramos el DNI buscado
         if (clientes[i].dni == dni)
         {
-            // Cambiamos el estado a habilitado (valor 1)
             clientes[i].habilitado = 1;
             printf("Cliente con DNI %d habilitado.\n", dni);
-            return; // Salimos de la función una vez hecho el cambio
+            return; 
         }
     }
-    // Si terminamos el recorrido y no se encontró
     printf("Cliente con DNI %d no encontrado.\n", dni);
 }
 
 // deshabilitar un cliente por DNI
 void deshabilitarCliente(struct Cliente clientes[], int cantidad, int dni)
 {
-    // Recorremos todos los clientes cargados
     for (int i = 0; i < cantidad; i++)
     {
-        // Comparamos el DNI ingresado con el de cada cliente
         if (clientes[i].dni == dni)
         {
-            // Cambiamos el estado a deshabilitado (valor 0)
             clientes[i].habilitado = 0;
             printf("Cliente con DNI %d deshabilitado.\n", dni);
-            return; // Terminamos la función al encontrar y modificar
+            return; 
         }
     }
-    // Si no se encontró ningún cliente con ese DNI
     printf("Cliente con DNI %d no encontrado.\n", dni);
 }
 
@@ -41,7 +33,6 @@ void deshabilitarCliente(struct Cliente clientes[], int cantidad, int dni)
 void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
 {
     struct Cliente aux;
-
     // Ordenamos con el método Burbuja, de mayor a menor saldo
     for (int i = 0; i < cantidad - 1; i++)
     {
@@ -57,7 +48,6 @@ void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
         }
     }
 
-    // Mostramos el listado ordenado
     printf("Clientes ordenados por saldo (de mayor a menor):\n");
     for (int i = 0; i < cantidad; i++)
     {
@@ -66,6 +56,41 @@ void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
     }
 }
 
+
+
+
+//****************************************************** */
+//si es que pide de manor a mayor , por lo general en este caso NO se usa
+//******************************************************** */
+
+// listar los clientes de menor a mayor saldo
+void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
+{
+    struct Cliente aux;
+
+    // Ordenamos con el método Burbuja, de menor a mayor saldo
+    for (int i = 0; i < cantidad - 1; i++)
+    {
+        for (int j = 0; j < cantidad - i - 1; j++)
+        {
+            // Si el saldo actual es mayor que el siguiente, los intercambiamos
+            if (clientes[j].saldo > clientes[j + 1].saldo)
+            {
+                aux = clientes[j];
+                clientes[j] = clientes[j + 1];
+                clientes[j + 1] = aux;
+            }
+        }
+    }
+
+    // Mostramos el listado ordenado
+    printf("Clientes ordenados por saldo (de menor a mayor):\n");
+    for (int i = 0; i < cantidad; i++)
+    {
+        printf("DNI: %d, Nombre: %s %s, Saldo: %.2f\n",
+               clientes[i].dni, clientes[i].nombre, clientes[i].apellido, clientes[i].saldo);
+    }
+}
 
 // buscar clientes con el metodo de Busqueda Binaria (Binary Search)
 struct Cliente buscarCliente(struct Cliente clientes[], int cantidad, int dni)
@@ -78,7 +103,6 @@ struct Cliente buscarCliente(struct Cliente clientes[], int cantidad, int dni)
 
     while (inicio <= fin)
     {
-        // Calculamos el punto medio para evitar desbordamiento
         int medio = inicio + (fin - inicio) / 2;
 
         if (clientes[medio].dni == dni)
@@ -107,10 +131,8 @@ struct Cliente buscarCliente(struct Cliente clientes[], int cantidad, int dni)
 // listar los clientes ordenados por DNI
 void listarClientesPorDNI(struct Cliente clientes[], int cantidad)
 {
-    // Llamamos a la función ya existente para ordenar por DNI
     ordenarClientes(clientes, cantidad);
 
-    // Mostramos todos los clientes en orden
     printf("Clientes ordenados por DNI:\n");
     for (int i = 0; i < cantidad; i++)
     {
@@ -123,7 +145,6 @@ void listarClientesPorDNI(struct Cliente clientes[], int cantidad)
 // modificar nombre, apellido o saldo de un cliente por DNI
 void modificarCliente(struct Cliente clientes[], int cantidad, int dni)
 {
-    // Recorremos la lista para buscar el cliente por DNI
     for (int i = 0; i < cantidad; i++)
     {
         if (clientes[i].dni == dni)
@@ -140,11 +161,9 @@ void modificarCliente(struct Cliente clientes[], int cantidad, int dni)
             scanf("%f", &clientes[i].saldo);
             
             printf("Cliente modificado.\n");
-            return; // Salimos de la función una vez finalizado
+            return; 
         }
     }
-
-    // Si terminamos el recorrido sin encontrar el DNI
     printf("Cliente con DNI %d no encontrado.\n", dni);
 }
 
@@ -155,7 +174,6 @@ void listarClientesHabilitados(struct Cliente clientes[], int cantidad)
     printf("Clientes habilitados:\n");
     int encontrados = 0;
 
-    // Recorremos todos los clientes
     for (int i = 0; i < cantidad; i++)
     {
         // Verificamos si el estado es habilitado (valor 1)
@@ -167,7 +185,6 @@ void listarClientesHabilitados(struct Cliente clientes[], int cantidad)
         }
     }
 
-    // Si no hay clientes habilitados, mostramos el aviso
     if (encontrados == 0)
     {
         printf("No hay clientes habilitados.\n");
