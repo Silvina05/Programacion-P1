@@ -1,17 +1,31 @@
 // habilitar un cliente por DNI
 void habilitarCliente(struct Cliente clientes[], int cantidad, int dni)
 {
+    int encontrado = 0;
     for (int i = 0; i < cantidad; i++)
     {
         if (clientes[i].dni == dni)
         {
-            clientes[i].habilitado = 1;
-            printf("Cliente con DNI %d habilitado.\n", dni);
-            return; 
+            encontrado = 1;
+            if (clientes[i].habilitado == 1)
+            {
+                printf("El cliente con DNI %d ya se encuentra habilitado.\n", dni);
+            }
+            else
+            {
+                clientes[i].habilitado = 1;
+                printf("Cliente con DNI %d habilitado correctamente.\n", dni);
+            }
+            break;
         }
     }
-    printf("Cliente con DNI %d no encontrado.\n", dni);
+    if (!encontrado)
+    {
+        printf("Cliente con DNI %d no encontrado.\n", dni);
+    }
 }
+
+
 
 // deshabilitar un cliente por DNI
 void deshabilitarCliente(struct Cliente clientes[], int cantidad, int dni)
@@ -20,8 +34,42 @@ void deshabilitarCliente(struct Cliente clientes[], int cantidad, int dni)
     {
         if (clientes[i].dni == dni)
         {
-            clientes[i].habilitado = 0;
-            printf("Cliente con DNI %d deshabilitado.\n", dni);
+            if (clientes[i].habilitado == 0)
+            {
+                printf("El cliente con DNI %d ya se encuentra deshabilitado.\n", dni);
+            }
+            else
+            {
+                clientes[i].habilitado = 0;
+                printf("Cliente con DNI %d deshabilitado.\n", dni);
+            }
+            return;
+        }
+    }
+    printf("Cliente con DNI %d no encontrado.\n", dni);
+}
+
+
+
+// modificar nombre, apellido o saldo de un cliente por DNI
+void modificarCliente(struct Cliente clientes[], int cantidad, int dni)
+{
+    for (int i = 0; i < cantidad; i++)
+    {
+        if (clientes[i].dni == dni)
+        {
+            // Mostramos los datos actuales antes de modificar
+            printf("Cliente encontrado: %s %s\n", clientes[i].nombre, clientes[i].apellido);
+            
+            // Solicitamos y guardamos los nuevos valores
+            printf("Nuevo nombre: ");
+            scanf("%s", clientes[i].nombre);
+            printf("Nuevo apellido: ");
+            scanf("%s", clientes[i].apellido);
+            printf("Nuevo saldo: ");
+            scanf("%f", &clientes[i].saldo);
+            
+            printf("Cliente modificado.\n");
             return; 
         }
     }
@@ -29,68 +77,41 @@ void deshabilitarCliente(struct Cliente clientes[], int cantidad, int dni)
 }
 
 
-// listar los clientes de mayor saldo
-void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
+
+// listar solo los clientes habilitados
+void listarClientesHabilitados(struct Cliente clientes[], int cantidad)
 {
-    struct Cliente aux;
-    // Ordenamos con el método Burbuja, de mayor a menor saldo
-    for (int i = 0; i < cantidad - 1; i++)
+    if (cantidad == 0)
     {
-        for (int j = 0; j < cantidad - i - 1; j++)
+        printf("No hay clientes cargados.\n");
+        return;
+    }
+
+    int encontrados = 0;
+    printf("Clientes habilitados:\n");
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        if (clientes[i].habilitado == 1)
         {
-            // Si el saldo actual es menor que el siguiente, los intercambiamos
-            if (clientes[j].saldo < clientes[j + 1].saldo)
-            {
-                aux = clientes[j];
-                clientes[j] = clientes[j + 1];
-                clientes[j + 1] = aux;
-            }
+            printf("DNI: %d, Nombre: %s %s, Saldo: %.2f\n",
+                   clientes[i].dni, clientes[i].nombre,
+                   clientes[i].apellido, clientes[i].saldo);
+            encontrados++;
         }
     }
 
-    printf("Clientes ordenados por saldo (de mayor a menor):\n");
-    for (int i = 0; i < cantidad; i++)
+    if (encontrados == 0)
     {
-        printf("DNI: %d, Nombre: %s %s, Saldo: %.2f\n",
-               clientes[i].dni, clientes[i].nombre, clientes[i].apellido, clientes[i].saldo);
+        printf("No hay clientes habilitados.\n");
+    }
+    else
+    {
+        printf("Total de clientes habilitados: %d\n", encontrados);
     }
 }
 
 
-
-
-//****************************************************** */
-//si es que pide de manor a mayor , por lo general en este caso NO se usa
-//******************************************************** */
-
-// listar los clientes de menor a mayor saldo
-void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
-{
-    struct Cliente aux;
-
-    // Ordenamos con el método Burbuja, de menor a mayor saldo
-    for (int i = 0; i < cantidad - 1; i++)
-    {
-        for (int j = 0; j < cantidad - i - 1; j++)
-        {
-            // Si el saldo actual es mayor que el siguiente, los intercambiamos
-            if (clientes[j].saldo > clientes[j + 1].saldo)
-            {
-                aux = clientes[j];
-                clientes[j] = clientes[j + 1];
-                clientes[j + 1] = aux;
-            }
-        }
-    }
-
-    // Mostramos el listado ordenado
-    printf("Clientes ordenados por saldo (de menor a mayor):\n");
-    for (int i = 0; i < cantidad; i++)
-    {
-        printf("DNI: %d, Nombre: %s %s, Saldo: %.2f\n",
-               clientes[i].dni, clientes[i].nombre, clientes[i].apellido, clientes[i].saldo);
-    }
-}
 
 // buscar clientes con el metodo de Busqueda Binaria (Binary Search)
 struct Cliente buscarCliente(struct Cliente clientes[], int cantidad, int dni)
@@ -142,53 +163,67 @@ void listarClientesPorDNI(struct Cliente clientes[], int cantidad)
 }
 
 
-// modificar nombre, apellido o saldo de un cliente por DNI
-void modificarCliente(struct Cliente clientes[], int cantidad, int dni)
+
+
+// listar los clientes de mayor saldo
+void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
 {
-    for (int i = 0; i < cantidad; i++)
+    struct Cliente aux;
+    // Ordenamos con el método Burbuja, de mayor a menor saldo
+    for (int i = 0; i < cantidad - 1; i++)
     {
-        if (clientes[i].dni == dni)
+        for (int j = 0; j < cantidad - i - 1; j++)
         {
-            // Mostramos los datos actuales antes de modificar
-            printf("Cliente encontrado: %s %s\n", clientes[i].nombre, clientes[i].apellido);
-            
-            // Solicitamos y guardamos los nuevos valores
-            printf("Nuevo nombre: ");
-            scanf("%s", clientes[i].nombre);
-            printf("Nuevo apellido: ");
-            scanf("%s", clientes[i].apellido);
-            printf("Nuevo saldo: ");
-            scanf("%f", &clientes[i].saldo);
-            
-            printf("Cliente modificado.\n");
-            return; 
-        }
-    }
-    printf("Cliente con DNI %d no encontrado.\n", dni);
-}
-
-
-// listar solo los clientes habilitados
-void listarClientesHabilitados(struct Cliente clientes[], int cantidad)
-{
-    printf("Clientes habilitados:\n");
-    int encontrados = 0;
-
-    for (int i = 0; i < cantidad; i++)
-    {
-        // Verificamos si el estado es habilitado (valor 1)
-        if (clientes[i].habilitado == 1)
-        {
-            printf("DNI: %d, Nombre: %s %s, Saldo: %.2f\n",
-                   clientes[i].dni, clientes[i].nombre, clientes[i].apellido, clientes[i].saldo);
-            encontrados++;
+            // Si el saldo actual es menor que el siguiente, los intercambiamos
+            if (clientes[j].saldo < clientes[j + 1].saldo)
+            {
+                aux = clientes[j];
+                clientes[j] = clientes[j + 1];
+                clientes[j + 1] = aux;
+            }
         }
     }
 
-    if (encontrados == 0)
+    printf("Clientes ordenados por saldo (de mayor a menor):\n");
+    for (int i = 0; i < cantidad; i++)
     {
-        printf("No hay clientes habilitados.\n");
+        printf("DNI: %d, Nombre: %s %s, Saldo: %.2f\n",
+               clientes[i].dni, clientes[i].nombre, clientes[i].apellido, clientes[i].saldo);
     }
 }
 
+
+
+//****************************************************** */
+//si es que pide de manor a mayor , por lo general en este caso NO se usa
+//******************************************************** */
+
+// listar los clientes de menor a mayor saldo
+void listarClientesPorSaldo(struct Cliente clientes[], int cantidad)
+{
+    struct Cliente aux;
+
+    // Ordenamos con el método Burbuja, de menor a mayor saldo
+    for (int i = 0; i < cantidad - 1; i++)
+    {
+        for (int j = 0; j < cantidad - i - 1; j++)
+        {
+            // Si el saldo actual es mayor que el siguiente, los intercambiamos
+            if (clientes[j].saldo > clientes[j + 1].saldo)
+            {
+                aux = clientes[j];
+                clientes[j] = clientes[j + 1];
+                clientes[j + 1] = aux;
+            }
+        }
+    }
+
+    // Mostramos el listado ordenado
+    printf("Clientes ordenados por saldo (de menor a mayor):\n");
+    for (int i = 0; i < cantidad; i++)
+    {
+        printf("DNI: %d, Nombre: %s %s, Saldo: %.2f\n",
+               clientes[i].dni, clientes[i].nombre, clientes[i].apellido, clientes[i].saldo);
+    }
+}
 
